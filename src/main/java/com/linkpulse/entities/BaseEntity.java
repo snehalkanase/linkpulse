@@ -10,9 +10,9 @@ import java.util.UUID;
 @MappedSuperclass
 @Getter
 @Setter
-public class BaseEntity {
+public abstract class BaseEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
     @Column(name="created_at", nullable = false, updatable = false)
@@ -21,4 +21,8 @@ public class BaseEntity {
     @Column(name = "updated_at")
     private Instant updatedAt = Instant.now();
 
+    @PreUpdate
+    public void onUpdate() {
+        this.updatedAt = Instant.now();
+    }
 }

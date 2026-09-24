@@ -14,8 +14,9 @@ CREATE TABLE users (
    email VARCHAR(255) UNIQUE NOT NULL,
    password_hash TEXT NOT NULL,
    role VARCHAR(50) DEFAULT 'MEMBER',
-   is_verified BOOLEAN DEFAULT 'FALSE',
+   is_verified BOOLEAN DEFAULT FALSE,
    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 
    CONSTRAINT fk_user_org
    FOREIGN KEY (organization_id)
@@ -29,6 +30,7 @@ CREATE TABLE domains (
        domain_name VARCHAR(255) UNIQUE NOT NULL,
        is_verified BOOLEAN DEFAULT FALSE,
        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+       updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 
        CONSTRAINT fk_domain_org
        FOREIGN KEY (organization_id)
@@ -47,6 +49,7 @@ CREATE TABLE domains (
        is_active BOOLEAN DEFAULT TRUE,
        expires_at TIMESTAMP,
        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+       updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 
        CONSTRAINT fk_link_org
        FOREIGN KEY (organization_id)
@@ -71,6 +74,8 @@ CREATE TABLE domains (
        browser VARCHAR(100),
        referrer TEXT,
        clicked_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+       created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+       updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 
        CONSTRAINT fk_click_link
        FOREIGN KEY (link_id)
@@ -85,6 +90,7 @@ CREATE TABLE domains (
        name VARCHAR(255),
        is_active BOOLEAN DEFAULT TRUE,
        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+       updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 
        CONSTRAINT fk_api_org
        FOREIGN KEY (organization_id)
@@ -98,6 +104,8 @@ CREATE TABLE domains (
        status VARCHAR(50),
        start_date TIMESTAMP,
        end_date TIMESTAMP,
+       created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+       updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 
        CONSTRAINT fk_subscription_org
        FOREIGN KEY (organization_id)

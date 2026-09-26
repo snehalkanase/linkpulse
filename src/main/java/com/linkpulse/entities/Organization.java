@@ -10,7 +10,7 @@ import java.util.List;
 @Table(name = "organizations")
 @Getter
 @Setter
-public class Organization extends BaseEntity{
+public class Organization extends BaseEntity {
     @Column(nullable = false)
     private String name;
 
@@ -23,12 +23,12 @@ public class Organization extends BaseEntity{
     @OneToMany(mappedBy = "organization", fetch = FetchType.LAZY)
     private List<ApiKey> apiKeys;
 
-    @OneToMany(mappedBy = "organization" , fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "organization", fetch = FetchType.LAZY)
     private List<Domain> domains;
 
     @OneToMany(mappedBy = "organization", fetch = FetchType.LAZY)
     private List<Link> links;
 
-    @OneToMany(mappedBy = "organization", fetch = FetchType.LAZY)
+    @OneToOne(mappedBy = "organization", fetch = FetchType.LAZY)
     private Subscription subscription;
 }

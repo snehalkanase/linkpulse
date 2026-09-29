@@ -23,24 +23,28 @@ public class AuthService {
         if (userRepository.existsByEmail(request.getEmail())) {
             throw new IllegalArgumentException("User with email '" + request.getEmail() + "' already exists.");
         }
+        if (request.getOrganizationCode() == null || request.getOrganizationCode().isBlank()) {
+            throw new IllegalArgumentException("Organization code is required.");
+        }
+        Organization organization = organizationRepository
+                .findByCode(request.getOrganizationCode().trim().toUpperCase())
+                .orElseThrow(() -> new IllegalArgumentException("Invalid organization code"));
 
-        String orgName = (request.getOrganizationName() != null && !request.getOrganizationName().isBlank())
-                ? request.getOrganizationName()
-                : request.getName() + "'s Org";
+        if (request.getRole() == null) {
+            throw new IllegalArgumentException("User Role is required.");
+        }
 
-        Organization org = new Organization();
-        org.setName(orgName);
-        org.setPlanType("FREE");
-        Organization savedOrg = organizationRepository.save(org);
+        // org.setCode(orgCode);
+        // org.setPlanType("FREE");
+        // Organization savedOrg = organizationRepository.save(org);
 
         User user = new User();
         user.setEmail(request.getEmail().toLowerCase());
-
         user.setPasswordHash(request.getPassword()); // In production, BCryptPasswordEncoder
         user.setName(request.getName());
-        user.setRole("ROLE_USER");
+        user.setRole(request.getRole());
         user.setVerified(true);
-        user.setOrganization(savedOrg);
+        user.setOrganization(organization);
 
         User savedUser = userRepository.save(user);
 
@@ -50,14 +54,14 @@ public class AuthService {
                 .email(savedUser.getEmail())
                 .name(savedUser.getName())
                 .role(savedUser.getRole())
-                .organizationId(savedOrg.getId())
-                .organizationName(savedOrg.getName())
+                .organizationId(organization.getId())
+                .organizationName(organization.getName())
                 .build();
     }
 
     @Transactional(readOnly = true)
     public AuthResponse login(LoginRequest request) {
-        User user = userRepository.findByEmail(request.getEmail().toLowerCase())
+        User user = userRepository.findByEmail(request.getEmail().trim().toLowerCase())
                 .orElseThrow(() -> new IllegalArgumentException("Invalid email or password"));
 
         if (!request.getPassword().equals(user.getPasswordHash())) {

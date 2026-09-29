@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 
 import java.util.UUID;
 
+import com.linkpulse.entities.Role;
+
 public class AuthDTOs {
 
     @Data
@@ -17,7 +19,8 @@ public class AuthDTOs {
         private String email;
         private String password;
         private String name;
-        private String organizationName;
+        private String organizationCode;
+        private Role role;
     }
 
     @Data
@@ -38,7 +41,7 @@ public class AuthDTOs {
         private UUID userId;
         private String email;
         private String name;
-        private String role;
+        private Role role;
         private UUID organizationId;
         private String organizationName;
     }

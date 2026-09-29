@@ -7,10 +7,14 @@ import lombok.Setter;
 import java.util.List;
 
 @Entity
-@Table(name = "organizations")
+@Table(name = "organizations", uniqueConstraints = @UniqueConstraint(name = "uk_organization_code", columnNames = "code"))
 @Getter
 @Setter
 public class Organization extends BaseEntity {
+
+    @Column(nullable = false, unique = true, length = 50)
+    private String code;
+
     @Column(nullable = false)
     private String name;
 
